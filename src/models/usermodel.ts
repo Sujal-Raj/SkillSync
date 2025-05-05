@@ -1,5 +1,52 @@
 import mongoose from 'mongoose';
 
+const weeklyEntrySchema = new mongoose.Schema({
+    week: {
+      type: Number,
+      required: true
+    },
+    goal: {
+      type: String,
+      required: true
+    },
+    tasks: {
+      type: [String],
+      required: true
+    }
+  }, { _id: false });
+
+// const roadmapSchema = new mongoose.Schema({
+//     goal: String,
+//     experience: String,
+//     content: String, // the actual roadmap text
+//     createdAt: {
+//         type: Date,
+//         default: Date.now,
+//     },
+// });
+
+
+const roadmapSchema = new mongoose.Schema({
+    goal: {
+      type: String,
+      required: true
+    },
+    experience: {
+      type: String,
+      required: true
+    },
+    content: {
+      type: [weeklyEntrySchema], // your structured roadmap
+      required: true
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  });
+
+  
+  
 const userModel = new mongoose.Schema({
     name: {
         type: String,
@@ -14,10 +61,19 @@ const userModel = new mongoose.Schema({
         type: String,
         required: true,
     },
-})
+    roadmaps: {
+      type: [roadmapSchema],
+      default: [],
+      required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+        required: true,
+    },
+    
+});
 
-
-// const User = mongoose.model('User', userModel);
 const User = mongoose.models.User || mongoose.model('User', userModel);
 
 export default User;

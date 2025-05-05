@@ -1,53 +1,74 @@
-// /app/api/generate-roadmap/route.ts (if using App Router)
 import { NextRequest, NextResponse } from "next/server";
-// import OpenAI from "openai";
 import { GoogleGenAI } from "@google/genai";
-
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY!,
-// });
+import User from "@/models/usermodel";
+import dbConnect from "@/db/dbConfig";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GENAI_API_KEY! });
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { goal, experience } = body;
+    const { goal, experience, userId } = body;
 
-    const prompt = `Create a weekly learning roadmap for someone with ${experience} experience who wants to ${goal}. Include week numbers and specific tasks.`;
+    await dbConnect();
 
-    // const response = await openai.chat.completions.create({
-    //   model: "gpt-4-turbo",
-    //   messages: [
-    //     {
-    //       role: "system",
-    //       content: "You are a helpful AI that generates structured learning roadmaps.",
-    //     },
-    //     {
-    //       role: "user",
-    //       content: prompt,
-    //     },
-    //   ],
-    //   temperature: 0.7,
-    // });
+    const prompt = `Create a weekly learning roadmap for someone with ${experience} experience who wants to ${goal}. Return the result as a JSON array where each item includes:
+- "week": week number (e.g., 1, 2, 3...)
+- "goal": the learning objective for that week
+- "tasks": an array of specific tasks to complete that week.
 
+Do not include any text outside of the JSON array.`;
 
     const response = await ai.models.generateContent({
-        model: "gemini-2.0-flash",
-        // contents: prompt,
-        contents: [
-            {
-              role: "user",
-              parts: [{ text: prompt }],
-            },
-          ],
-      });
-    //   console.log(response.text);
-    // const roadmap = response.choices[0]?.message?.content;
+      model: "gemini-2.0-flash",
+      contents: [
+        {
+          role: "user",
+          parts: [{ text: prompt }],
+        },
+      ],
+    });
 
-    return NextResponse.json({ response: response.text });
-  } catch (error:unknown) {
-    console.error("Error from OpenAI:", error);
+    let rawText = response.text;
+
+    // Remove Markdown code block markers
+    if (rawText && rawText.startsWith("```")) {
+      const firstNewline = rawText.indexOf("\n");
+      const lastTripleBacktick = rawText.lastIndexOf("```");
+      rawText = rawText.substring(firstNewline + 1, lastTripleBacktick).trim();
+    }
+
+    // Parse the JSON string safely
+    let parsedRoadmap;
+    try {
+      if (typeof rawText === "string") {
+        parsedRoadmap = JSON.parse(rawText);
+      } else {
+        console.error("AI response is undefined or not a string:", rawText);
+        return NextResponse.json({ error: "Invalid AI response format" }, { status: 500 });
+      }
+    } catch (err) {
+      console.error("Failed to parse AI response:", rawText);
+      return NextResponse.json({ error: "Invalid AI response format" }, { status: 500 });
+    }
+
+    // Save to user
+    const user = await User.findById(userId);
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    user.roadmaps.push({
+      goal,
+      experience,
+      content: parsedRoadmap, // Save the structured roadmap
+    });
+
+    await user.save();
+
+    return NextResponse.json({ response: parsedRoadmap });
+  } catch (error: unknown) {
+    console.error("Error generating roadmap:", error);
     return NextResponse.json({ error: "Failed to generate roadmap." }, { status: 500 });
   }
 }

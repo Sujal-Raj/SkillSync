@@ -2,6 +2,7 @@ import User from "@/models/usermodel";
 import dbConnect from "@/db/dbConfig";
 import bcrypt from "bcryptjs";
 import { NextResponse, NextRequest } from "next/server";
+import { create } from "domain";
 
 
 export async function POST(request: NextRequest) {
@@ -20,6 +21,8 @@ export async function POST(request: NextRequest) {
         name,
         email,
         password: hashedPassword,
+        roadmaps: [], 
+        createdAt: new Date(),
     });
     await newUser.save();
     // Return a success response

@@ -54,11 +54,11 @@ function AuthPage({ initialView = 'signup' }: { initialView?: 'login' | 'signup'
 
   const handleSignUp = async  (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Sign Up Form Data:', {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password
-    });
+    // console.log('Sign Up Form Data:', {
+    //   name: formData.name,
+    //   email: formData.email,
+    //   password: formData.password
+    // });
 
     try {
         const response = await axios.post('/api/auth/signup', {
@@ -78,11 +78,11 @@ function AuthPage({ initialView = 'signup' }: { initialView?: 'login' | 'signup'
 
   const handleLogin = async  (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login Form Data:', {
-      email: formData.email,
-      password: formData.password,
-      rememberMe: formData.rememberMe
-    });
+    // console.log('Login Form Data:', {
+    //   email: formData.email,
+    //   password: formData.password,
+    //   rememberMe: formData.rememberMe
+    // });
 
     try {
         const response = await axios.post('/api/auth/login', {
