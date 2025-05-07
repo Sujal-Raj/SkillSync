@@ -19,6 +19,7 @@
     "openai": "^4.97.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.5.2",
     "react-markdown": "^10.1.0",
     "zustand": "^5.0.4"
   },

@@ -107,7 +107,7 @@ const Navbar = ({ toggleDarkMode, isDarkMode }) => {
         {/* Mobile Navigation */}
         <div className={`md:hidden transition-all duration-300 ease-in-out text-right ${
           isMenuOpen 
-            ? 'max-h-96 opacity-100 mt-4 bg-black/80 backdrop-blur-lg shadow-md ' 
+            ? 'max-h-96 opacity-100 mt-4 bg-white dark:bg-black/80 dark:text-white backdrop-blur-lg shadow-md ' 
             : 'max-h-0 opacity-0 overflow-hidden'
         }`}>
           <div className="flex flex-col space-y-4 pb-6">

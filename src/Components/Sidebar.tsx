@@ -30,6 +30,15 @@ export default function Sidebar() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+
+  const handleLogout = () => {
+    console.log("Logging out...");
+    localStorage.clear();
+    sessionStorage.clear();
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Clear the token cookie
+    window.location.href = "/"; // Redirect to login page
+  };
+
   // Close sidebar on mobile when navigating to a new page
   useEffect(() => {
     if (window.innerWidth < 768) {
@@ -111,8 +120,9 @@ export default function Sidebar() {
         </nav>
 
         <div className="absolute bottom-0 w-full p-4 border-t border-gray-200 dark:border-gray-800">
-          <button className="flex items-center text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 p-3 w-full rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
-            <LogOut className="w-5 h-5 mr-3" />
+          <button onClick={handleLogout} className="flex items-center text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 p-3 w-full rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+            <LogOut
+            className="w-5 h-5 mr-3 cursor-pointer" />
             <span>Logout</span>
           </button>
         </div>

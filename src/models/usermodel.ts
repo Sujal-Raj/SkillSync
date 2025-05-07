@@ -12,7 +12,11 @@ const weeklyEntrySchema = new mongoose.Schema({
     tasks: {
       type: [String],
       required: true
-    }
+    },
+    completed: {
+      type: Boolean,
+      default: false
+    },
   }, { _id: false });
 
 // const roadmapSchema = new mongoose.Schema({

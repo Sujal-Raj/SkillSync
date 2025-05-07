@@ -1,13 +1,15 @@
 "use client";
 import { useUserStore } from "@/stores/userStore";
 import { useEffect, useState } from "react";
-import { CheckCircle, Circle, ChevronDown, ChevronUp } from "lucide-react";
+import { CheckCircle, Circle, ChevronDown, ChevronUp, AlertCircle } from "lucide-react";
+import { toast } from "react-hot-toast"; // Make sure to install react-hot-toast for notifications
 
 // Define TypeScript interfaces
 interface Task {
   week: number;
   goal: string;
   tasks: string[];
+  completed?: boolean; // Add completed property to match your schema
 }
 
 interface RoadmapItem {
@@ -33,6 +35,7 @@ export default function RoadmapsPage() {
   const [error, setError] = useState<string | null>(null);
   const [completedWeeks, setCompletedWeeks] = useState<CompletionState>({});
   const [expandedWeeks, setExpandedWeeks] = useState<ExpansionState>({});
+  const [updatingWeek, setUpdatingWeek] = useState<number | null>(null);
 
   const fetchRoadmap = async () => {
     if (!user?._id) {
@@ -45,18 +48,25 @@ export default function RoadmapsPage() {
       setLoading(true);
       const response = await fetch(`/api/get-roadmap?userId=${user._id}`);
       const data = await response.json();
-      console.log(data.roadmap);
+      // console.log(data.roadmap);
       const roadmapData = data.roadmap;
       setRoadmap(roadmapData);
       
       // Initialize expanded state - only first week expanded by default
       if (roadmapData && roadmapData.length > 0 && roadmapData[0].content) {
         const initialExpandedState: ExpansionState = {};
+        const initialCompletionState: CompletionState = {};
+        
         roadmapData[0].content.forEach((weekData: Task): void => {
           // Only expand the first week, keep others collapsed
           initialExpandedState[weekData.week] = weekData.week === 1;
+          
+          // Initialize completion state from database
+          initialCompletionState[weekData.week] = weekData.completed || false;
         });
+        
         setExpandedWeeks(initialExpandedState);
+        setCompletedWeeks(initialCompletionState);
       }
       
       setLoading(false);
@@ -73,11 +83,61 @@ export default function RoadmapsPage() {
     }
   }, [user]);
 
-  const toggleWeekCompletion = (week: number): void => {
+  const toggleWeekCompletion = async (week: number): Promise<void> => {
+    if (!user?._id || !roadmap || roadmap.length === 0) return;
+    
+    const roadmapId = roadmap[0]._id;
+    const newCompletionState = !completedWeeks[week];
+    
+    // Update local state immediately for better UX
     setCompletedWeeks(prev => ({
       ...prev,
-      [week]: !prev[week]
+      [week]: newCompletionState
     }));
+    
+    // Set the updating state to show a loading indicator
+    setUpdatingWeek(week);
+    
+    try {
+      const response = await fetch('/api/update-week-completion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user._id,
+          roadmapId,
+          week,
+          completed: newCompletionState
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!data.success) {
+        // Revert the local state if the API call fails
+        setCompletedWeeks(prev => ({
+          ...prev,
+          [week]: !newCompletionState
+        }));
+        
+        toast.error(`Failed to update: ${data.message}`);
+      } else {
+        toast.success(newCompletionState ? "Week marked as complete!" : "Week marked as incomplete");
+      }
+    } catch (error) {
+      console.error("Error updating week completion:", error);
+      
+      // Revert the local state if the API call fails
+      setCompletedWeeks(prev => ({
+        ...prev,
+        [week]: !newCompletionState
+      }));
+      
+      toast.error("Failed to update completion status");
+    } finally {
+      setUpdatingWeek(null);
+    }
   };
 
   const toggleWeekExpansion = (week: number): void => {
@@ -143,9 +203,18 @@ export default function RoadmapsPage() {
                       toggleWeekCompletion(weekData.week);
                     }}
                     className="focus:outline-none"
+                    disabled={updatingWeek === weekData.week}
                     aria-label={completedWeeks[weekData.week] ? "Mark as incomplete" : "Mark as complete"}
                   >
-                    {completedWeeks[weekData.week] ? (
+                    {updatingWeek === weekData.week ? (
+                      <div className="h-6 w-6 animate-pulse text-blue-400">
+                        <span className="sr-only">Updating...</span>
+                        <svg className="animate-spin h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                      </div>
+                    ) : completedWeeks[weekData.week] ? (
                       <CheckCircle className="h-6 w-6 text-green-500" />
                     ) : (
                       <Circle className="h-6 w-6 text-gray-400 dark:text-gray-500" />
