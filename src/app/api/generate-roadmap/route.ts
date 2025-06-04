@@ -48,7 +48,7 @@ Do not include any text outside of the JSON array.`;
         return NextResponse.json({ error: "Invalid AI response format" }, { status: 500 });
       }
     } catch (err) {
-      console.error("Failed to parse AI response:", rawText);
+      console.error("Failed to parse AI response:", err);
       return NextResponse.json({ error: "Invalid AI response format" }, { status: 500 });
     }
 

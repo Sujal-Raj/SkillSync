@@ -100,7 +100,7 @@ const Testimonials = () => {
                 
                 {/* Testimonial content */}
                 <p className="text-gray-600 dark:text-gray-300 italic">
-                  "{testimonial.content}"
+&quot;{testimonial.content}&quot;
                 </p>
                 
                 {/* User info */}

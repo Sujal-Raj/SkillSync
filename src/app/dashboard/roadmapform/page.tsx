@@ -55,7 +55,7 @@ export default function RoadmapForm() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="goal" className="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
-                What's your goal?
+                What&apos;s your goal?
               </label>
               <input
                 type="text"

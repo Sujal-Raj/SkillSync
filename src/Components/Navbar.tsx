@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X, Moon, Sun } from 'lucide-react';
+import { Menu, X} from 'lucide-react';
 
 // const Navbar = ({ toggleDarkMode, isDarkMode }) => {
 const Navbar = () => {

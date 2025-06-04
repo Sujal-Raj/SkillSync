@@ -371,7 +371,7 @@ export default function RoadmapAnalytics() {
               ) : (
                 <div className="text-center py-8">
                   <p className="text-gray-600 dark:text-gray-400">
-                    Congratulations! You've completed all tasks in your roadmap.
+                    Congratulations! You&apos;ve completed all tasks in your roadmap.
                   </p>
                 </div>
               )}
@@ -469,7 +469,7 @@ export default function RoadmapAnalytics() {
             <div className="p-6 border-b border-gray-200 dark:border-gray-700">
               <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Your Achievements</h3>
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                Milestones you've reached in your learning journey
+                Milestones you&apos;ve reached in your learning journey
               </p>
             </div>
             
@@ -500,7 +500,7 @@ export default function RoadmapAnalytics() {
                       : "text-gray-500 dark:text-gray-400"
                   }`}>First Week Complete</h4>
                   <p className="text-sm text-center mt-2 text-gray-600 dark:text-gray-400">
-                    You've completed your first week of learning!
+                    You&apos;ve completed your first week of learning!
                   </p>
                 </div>
                 
@@ -529,7 +529,7 @@ export default function RoadmapAnalytics() {
                       : "text-gray-500 dark:text-gray-400"
                   }`}>25% Milestone</h4>
                   <p className="text-sm text-center mt-2 text-gray-600 dark:text-gray-400">
-                    You're a quarter of the way through your roadmap!
+                    You&apos;re a quarter of the way through your roadmap!
                   </p>
                 </div>
                 
@@ -558,7 +558,7 @@ export default function RoadmapAnalytics() {
                       : "text-gray-500 dark:text-gray-400"
                   }`}>Halfway There!</h4>
                   <p className="text-sm text-center mt-2 text-gray-600 dark:text-gray-400">
-                    You've completed 50% of your learning roadmap!
+                    You&apos;ve completed 50% of your learning roadmap!
                   </p>
                 </div>
                 
@@ -587,7 +587,7 @@ export default function RoadmapAnalytics() {
                       : "text-gray-500 dark:text-gray-400"
                   }`}>7-Day Streak</h4>
                   <p className="text-sm text-center mt-2 text-gray-600 dark:text-gray-400">
-                    You've maintained a 7-day streak of learning!
+                    You&apos;ve maintained a 7-day streak of learning!
                   </p>
                 </div>
                   
@@ -616,7 +616,7 @@ export default function RoadmapAnalytics() {
                       : "text-gray-500 dark:text-gray-400"
                   }`}>Roadmap Complete!</h4>
                   <p className="text-sm text-center mt-2 text-gray-600 dark:text-gray-400">
-                    Congratulations! You've completed your entire roadmap!
+                    Congratulations! You&apos;ve completed your entire roadmap!
                   </p>
                 </div>
               </div>

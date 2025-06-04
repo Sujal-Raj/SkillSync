@@ -1,7 +1,7 @@
 "use client";
 import { useUserStore } from "@/stores/userStore";
 import { useEffect, useState } from "react";
-import { CheckCircle, Circle, ChevronDown, ChevronUp, AlertCircle } from "lucide-react";
+import { CheckCircle, Circle, ChevronDown, ChevronUp, } from "lucide-react";
 import { toast } from "react-hot-toast"; // Make sure to install react-hot-toast for notifications
 
 // Define TypeScript interfaces
@@ -269,7 +269,7 @@ export default function RoadmapsPage() {
         <div className="mt-8 flex justify-center">
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 text-center">
             <p className="text-gray-700 dark:text-gray-300">
-              Keep going! You're making great progress on your learning journey.
+              Keep going! You&apos;re making great progress on your learning journey.
             </p>
           </div>
         </div>
