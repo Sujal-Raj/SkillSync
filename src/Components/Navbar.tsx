@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Menu, X, Moon, Sun } from 'lucide-react';
 
-const Navbar = ({ toggleDarkMode, isDarkMode }) => {
+// const Navbar = ({ toggleDarkMode, isDarkMode }) => {
+const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 

@@ -21,8 +21,8 @@ export default function Sidebar() {
     { label: "Dashboard", href: "/dashboard", icon: <Brain className="w-5 h-5" /> },
     { label: "My Roadmaps", href: "/dashboard/roadmaps", icon: <Map className="w-5 h-5" /> },
     { label: "Analytics", href: "/dashboard/analytics", icon: <BarChart2 className="w-5 h-5" /> },
-    { label: "Resume Assist", href: "/dashboard/resume", icon: <FileText className="w-5 h-5" /> },
-    { label: "Settings", href: "/dashboard/settings", icon: <Settings className="w-5 h-5" /> }
+    { label: "Resume Assist", href: "/dashboard/resume-assist", icon: <FileText className="w-5 h-5" /> },
+    // { label: "Settings", href: "/dashboard/settings", icon: <Settings className="w-5 h-5" /> }
   ];
 
   // Toggle sidebar

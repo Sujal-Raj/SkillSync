@@ -19,16 +19,6 @@ const weeklyEntrySchema = new mongoose.Schema({
     },
   }, { _id: false });
 
-// const roadmapSchema = new mongoose.Schema({
-//     goal: String,
-//     experience: String,
-//     content: String, // the actual roadmap text
-//     createdAt: {
-//         type: Date,
-//         default: Date.now,
-//     },
-// });
-
 
 const roadmapSchema = new mongoose.Schema({
     goal: {
